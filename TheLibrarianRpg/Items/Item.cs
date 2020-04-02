@@ -7,6 +7,7 @@ namespace TheLibrarianRpg
     public class Item
     {
         public string name;
+        public int price;
         public string[] classRequirement;
         public int levelRequirement;
 
@@ -15,6 +16,7 @@ namespace TheLibrarianRpg
 
         public string itemEffect;
 
+        public bool equipped;
         public virtual void ItemEffect(){
         }
         public virtual void UnequipEffect(){

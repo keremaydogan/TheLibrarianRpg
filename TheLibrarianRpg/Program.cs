@@ -6,9 +6,22 @@ namespace TheLibrarianRpg
     {
         static void Main(string[] args)
         {
+            int[] ints = new int[5];
 
+            ints[2] = 5;
 
+            for(int i =0; i < ints.Length; i++)
+            {
+                if(ints[i] == 5)
+                {
+                    ints[i] = 3;
+                }
 
+                
+            }
+
+            Console.WriteLine(ints[2]);
+            Console.ReadKey();
         }
 
         static int ReadNumber(int min, int max)

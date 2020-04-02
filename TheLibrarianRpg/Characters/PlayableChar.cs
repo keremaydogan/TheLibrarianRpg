@@ -24,19 +24,18 @@ namespace TheLibrarianRpg
         private int enduranceBase;
         private int dexterityBase;
 
-        public float mobValue;
-
         public int statPoints;
 
-        private int entry;
+        public float mobValue;
 
         public Item[] inventory;
         public Item[] equipment;
 
+        private int entry;
+        private int[] inventoryID;
+
         public PlayableChar()
         {
-            mobValue = 0;
-
             vigor = 4;
             strength = 4;
             endurance = 4;
@@ -45,6 +44,8 @@ namespace TheLibrarianRpg
             strengthBase = strength;
             enduranceBase = endurance;
             dexterityBase = dexterity;
+
+            inventoryID = new int[17];
         }
 
         public void Attack(Mob[] mob)
@@ -154,30 +155,74 @@ namespace TheLibrarianRpg
 
         void ChangeEquipment()
         {
+            int inventIDLen;
+            int answer;
             do{
                 Console.Clear();
                 ShowEquipment();
-                Console.WriteLine("Choose equipment:");
+                Console.WriteLine("Choose equipment: (4 to exit)");
+                entry = ReadNumber(1, 4);
+                switch (entry){
+                    case (1):
+                        ShowInventory(typeof(TheLibrarianRpg.Weapon));
+                        break;
+                    case (2):
+                        ShowInventory(typeof(TheLibrarianRpg.Armor));
+                        break;
+                    case (3):
+                        ShowInventory(typeof(TheLibrarianRpg.Accessory));
+                        break;
+                }
+                if(entry != 4){
+                    for (inventIDLen = 0; inventoryID[inventIDLen] != -1; inventIDLen++) { }
+                    Console.WriteLine("\nChoose item:");
+                    answer = ReadNumber(1, inventIDLen);
 
-
-            } while (entry != 5);
+                    for(int i = 0; i < inventory.Length; i++){
+                        if (inventory[i].GetType() == equipment[entry - 1].GetType() && inventory[i].equipped == true){
+                            inventory[i].equipped = false;
+                        }
+                    }
+                    equipment[entry - 1] = inventory[inventoryID[answer - 1]];
+                    inventory[inventoryID[answer - 1]].equipped = true;
+                }
+            } while (entry != 4);
         }
 
         void ShowInventory(Type itemType)
         {
-            Console.WriteLine("IIII INVENTORY IIII");
-            for (int i = 0; inventory[i] != null && i < inventory.Length; i++)
-            {
-                Console.WriteLine((i + 1) + ") " + inventory[i].name);
+            for(int i = 0; i < inventoryID.Length; i++){
+                inventoryID[i] = -1;
             }
-            Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");
+            int invId = 0;
+            string inventName;
+            if (itemType == typeof(TheLibrarianRpg.Item)){
+                Console.WriteLine("IIII INVENTORY IIII");
+                for (int i = 0; inventory[i] != null && i < inventory.Length; i++){
+                    inventoryID[i] = i;
+                    Console.WriteLine((i + 1) + ") " + inventory[i].name);
+                }
+                Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");
+            }else{
+                inventName = itemType.GetType().Name.ToString().ToUpper();
+                Console.WriteLine("IIII " + inventName + " IIII");
+
+                for (int i = 0; i < inventory.Length; i++){
+                    if(inventory[i].GetType() == itemType){
+                        inventoryID[invId] = i;
+                        invId++;
+                        Console.WriteLine((invId) + ") " + inventory[i].name);
+                    }
+                }
+                Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");
+            }
         }
 
         void ShowEquipment()
         {
             string[] itemNames = new string[3];
             Console.WriteLine("IIII EQUIPMENT IIII");
-            Console.WriteLine("Weapon: " + equipment[0].name + " ATK: +" + equipment[0].itemEffect + "\nArmor: " + equipment[1].name + " DEF: +" + equipment[1].itemEffect + "\nAccessory: " + equipment[2].name + " Efct: " + equipment[2].itemEffect);
+            Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].itemEffect + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].itemEffect + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].itemEffect);
             Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");
         }
 

@@ -12,6 +12,8 @@ namespace TheLibrarianRpg
 
             quantity = 1;
             maxQuantity = 1;
+
+            equipped = false;
         }
     }
 }
