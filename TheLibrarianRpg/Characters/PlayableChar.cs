@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheLibrarianRpg
 {
-    class PlayableChar : Character
+    public class PlayableChar : Character
     {
         public int xp;
         public int level;
@@ -48,7 +48,7 @@ namespace TheLibrarianRpg
             inventoryID = new int[17];
         }
 
-        public void Attack(Mob[] mob)
+        public void Fight(Mob[] mob)
         {
             Console.WriteLine("1) Attack\n2) Check\n3\n3) Use item\n4) Change equipment");
             entry = ReadNumber(1, 4);
@@ -90,6 +90,12 @@ namespace TheLibrarianRpg
                     break;
             }
         }
+
+        public void Attack(Mob[] mob)
+        {
+
+        }
+
         public void SetStats()
         {
             entry = 0;
@@ -187,6 +193,26 @@ namespace TheLibrarianRpg
                     inventory[inventoryID[answer - 1]].equipped = true;
                 }
             } while (entry != 4);
+        }
+
+        void ItemEffect(Item item)
+        {
+            Type type = item.GetType();
+            switch (type)
+            {
+                case (typeof(TheLibrarianRpg.Weapon)):
+
+                    break;
+                    //case ():
+
+                    //    break;
+                    //case ():
+
+                    //    break;
+                    //case ():
+
+                    //    break;
+            }
         }
 
         void ShowInventory(Type itemType)

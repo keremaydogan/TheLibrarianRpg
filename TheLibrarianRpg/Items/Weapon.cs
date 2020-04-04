@@ -6,7 +6,7 @@ namespace TheLibrarianRpg
 {
     public class Weapon : Item
     {
-        public int atkPower;
+        public float atkPower;
         public float critChance;
         public int critDeviRate; //Critic attack deviation rate
 
@@ -21,6 +21,15 @@ namespace TheLibrarianRpg
             maxQuantity = 1;
 
             equipped = false;
+        }
+
+        public override void Effect(bool equipped, PlayableChar pc)
+        {
+            if (equipped){
+                pc.atkPower += atkPower;
+            }else{
+                pc.atkPower -= atkPower;
+            }
         }
     }
 }

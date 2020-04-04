@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheLibrarianRpg
 {
-    class Character
+    public class Character
     {
         public string name;
         public float maxHp;

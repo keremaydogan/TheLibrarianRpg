@@ -17,9 +17,9 @@ namespace TheLibrarianRpg
         public string itemEffect;
 
         public bool equipped;
-        public virtual void ItemEffect(){
+        public virtual void Effect(bool equipped, PlayableChar pc)
+        {
         }
-        public virtual void UnequipEffect(){
-        }
+
     }
 }

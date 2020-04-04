@@ -18,5 +18,14 @@ namespace TheLibrarianRpg
 
             equipped = false;
         }
+
+        public override void Effect(bool equipped, PlayableChar pc)
+        {
+            if (equipped){
+                pc.atkResistance += atkResist;
+            }else{
+                pc.atkResistance -= atkResist;
+            }
+        }
     }
 }

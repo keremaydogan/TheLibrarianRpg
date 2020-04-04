@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheLibrarianRpg
 {
-    class Mob : Character
+    public class Mob : Character
     {
         public int xpValue;
 
@@ -23,7 +23,7 @@ namespace TheLibrarianRpg
         {
         }
 
-        public void Attack(PlayableChar[] pChar)
+        public void Fight(PlayableChar[] pChar)
         {
             maxValue = 0;
 
