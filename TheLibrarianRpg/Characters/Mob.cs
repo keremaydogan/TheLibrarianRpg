@@ -65,12 +65,8 @@ namespace TheLibrarianRpg
                 }
             }
 
-            pChar[chosen].hp -= atkPower;
-            if (hp < 0)
-            {
-                hp = 0;
-            }
-            Console.WriteLine(name + " attacked to " + pChar[chosen].name + ".");
+            //ENTER ATTACK EQUATION
+
         }
 
         public string fightScreenDef()

@@ -9,11 +9,6 @@ namespace TheLibrarianRpg
         public int xp;
         public int level;
 
-        private int vigor;
-        private int strength;
-        private int endurance;
-        private int dexterity;
-
         private int vigorMultp;
         private int strengthMultp;
         private int enduranceMultp;
@@ -55,21 +50,8 @@ namespace TheLibrarianRpg
             switch (entry)
             {
                 case 1:
-                    Console.WriteLine("Choose enemy:");
-                    for(int i = 0; i < mob.Length; i++)
-                    {
-                        Console.WriteLine((i + 1) + ") " + mob[i].name);
-                    }
-                    entry = ReadNumber(1, mob.Length);
-
-                    // ENTER ATTACK EQUATION
-                    //
-                    //
-                    //
-
-                    Console.WriteLine(name + " attacked to " + mob[entry -1].name + ".");
+                    Attack(mob);
                     break;
-
                 case 2:
                     Console.WriteLine("Choose enemy:");
                     for (int i = 0; i < mob.Length; i++)
@@ -93,7 +75,30 @@ namespace TheLibrarianRpg
 
         public void Attack(Mob[] mob)
         {
+            float atk = 0;
+            Console.WriteLine("Choose enemy:");
+            for (int i = 0; i < mob.Length; i++)
+            {
+                Console.WriteLine((i + 1) + ") " + mob[i].name);
+            }
+            entry = ReadNumber(1, mob.Length);
+            if (Crit())
+            {
+                atk += atkPower * critDeviRate;
+            }else{
+                atk += atkPower;
+            }
+            atkPower = atkPower * AttackDeviRate();
+            atkPower = MathF.Ceiling(atkPower);
 
+            mob[entry - 1].hp -= atk;
+
+            Console.WriteLine(name + " attacked to " + mob[entry - 1].name + " and damaged " + atk + " HP.");
+            if(mob[entry - 1].hp <= 0)
+            {
+                Console.WriteLine(mob[entry - 1].name + " died.");
+                mob[entry - 1] = null;
+            }
         }
 
         public void SetStats()
@@ -187,10 +192,12 @@ namespace TheLibrarianRpg
                     for(int i = 0; i < inventory.Length; i++){
                         if (inventory[i].GetType() == equipment[entry - 1].GetType() && inventory[i].equipped == true){
                             inventory[i].equipped = false;
+                            ItemEffect(inventory[i]);
                         }
                     }
                     equipment[entry - 1] = inventory[inventoryID[answer - 1]];
                     inventory[inventoryID[answer - 1]].equipped = true;
+                    ItemEffect(inventory[inventoryID[answer - 1]]);
                 }
             } while (entry != 4);
         }
@@ -198,20 +205,31 @@ namespace TheLibrarianRpg
         void ItemEffect(Item item)
         {
             Type type = item.GetType();
-            switch (type)
+            if (type == typeof(TheLibrarianRpg.Weapon))
             {
-                case (typeof(TheLibrarianRpg.Weapon)):
+                if (item.equipped){
+                    atkPower += item.atkPower;
+                }else{
+                    atkPower -= item.atkPower;
+                }
+            }else if(type == typeof(TheLibrarianRpg.Armor)){
+                if (item.equipped)
+                {
+                    atkResistance += atkResistance;
+                }else{
+                    atkResistance -= atkResistance;
+                }
+            }
+            else if(type == typeof(TheLibrarianRpg.Accessory)){
+                if (item.equipped)
+                {
 
-                    break;
-                    //case ():
+                }else{
 
-                    //    break;
-                    //case ():
+                }
+            }
+            else if(type == typeof(TheLibrarianRpg.Consumable)){
 
-                    //    break;
-                    //case ():
-
-                    //    break;
             }
         }
 
@@ -248,7 +266,7 @@ namespace TheLibrarianRpg
         {
             string[] itemNames = new string[3];
             Console.WriteLine("IIII EQUIPMENT IIII");
-            Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].itemEffect + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].itemEffect + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].itemEffect);
+            Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].atkPower + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].atkResistance + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].itemEffect);
             Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");
         }
 

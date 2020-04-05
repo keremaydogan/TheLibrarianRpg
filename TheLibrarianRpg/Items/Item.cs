@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheLibrarianRpg
 {
-    public class Item
+    public class Item : Stats
     {
         public string name;
         public int price;
@@ -17,9 +17,7 @@ namespace TheLibrarianRpg
         public string itemEffect;
 
         public bool equipped;
-        public virtual void Effect(bool equipped, PlayableChar pc)
-        {
-        }
+        
 
     }
 }
