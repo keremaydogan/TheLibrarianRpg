@@ -16,10 +16,36 @@ namespace TheLibrarianRpg
             rand = new Random();
         }
 
-        public bool Crit()
+        public bool CritChance()
         {
             int rnd = rand.Next(1, 101);
             if(critChance >= rnd)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool DodgeChance()
+        {
+            int rnd = rand.Next(1, 101);
+            if (dodgeChance >= rnd)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool HitChance()
+        {
+            int rnd = rand.Next(1, 101);
+            if (hitChance >= rnd)
             {
                 return true;
             }

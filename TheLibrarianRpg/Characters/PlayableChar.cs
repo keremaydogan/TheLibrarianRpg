@@ -28,6 +28,7 @@ namespace TheLibrarianRpg
 
         private int entry;
         private int[] inventoryID;
+        private int inventIDLen;
 
         public PlayableChar()
         {
@@ -45,13 +46,14 @@ namespace TheLibrarianRpg
 
         public void Fight(Mob[] mob)
         {
-            Console.WriteLine("1) Attack\n2) Check\n3\n3) Use item\n4) Change equipment");
+            Console.WriteLine("1) Attack\n2) Check\n3) Use item\n4) Change equipment");
             entry = ReadNumber(1, 4);
             switch (entry)
             {
                 case 1:
                     Attack(mob);
                     break;
+
                 case 2:
                     Console.WriteLine("Choose enemy:");
                     for (int i = 0; i < mob.Length; i++)
@@ -64,11 +66,12 @@ namespace TheLibrarianRpg
                     break;
 
                 case 3:
-
+                    ShowInventory(typeof(TheLibrarianRpg.Consumable));
+                    UseItem(inventoryID[entry - 1]);
                     break;
 
                 case 4:
-
+                    ChangeEquipment();
                     break;
             }
         }
@@ -82,22 +85,37 @@ namespace TheLibrarianRpg
                 Console.WriteLine((i + 1) + ") " + mob[i].name);
             }
             entry = ReadNumber(1, mob.Length);
-            if (Crit())
+
+            if (HitChance())
             {
-                atk += atkPower * critDeviRate;
+                if (mob[entry - 1].DodgeChance())
+                {
+                    Console.WriteLine(mob[entry - 1].name + " dodged the attack.");
+                }
+                else
+                {
+                    if (CritChance())
+                    {
+                        atk += atkPower * critDeviRate;
+                    }
+                    else
+                    {
+                        atk += atkPower;
+                    }
+                    atk = atk * AttackDeviRate();
+                    atk = MathF.Ceiling(atk);
+
+                    mob[entry - 1].hp -= atk;
+
+                    Console.WriteLine(name + " attacked to " + mob[entry - 1].name + " and damaged " + atk + " HP.");
+                    if (mob[entry - 1].hp <= 0)
+                    {
+                        Console.WriteLine(mob[entry - 1].name + " died.");
+                        mob[entry - 1] = null;
+                    }
+                }
             }else{
-                atk += atkPower;
-            }
-            atkPower = atkPower * AttackDeviRate();
-            atkPower = MathF.Ceiling(atkPower);
-
-            mob[entry - 1].hp -= atk;
-
-            Console.WriteLine(name + " attacked to " + mob[entry - 1].name + " and damaged " + atk + " HP.");
-            if(mob[entry - 1].hp <= 0)
-            {
-                Console.WriteLine(mob[entry - 1].name + " died.");
-                mob[entry - 1] = null;
+                Console.WriteLine(name + " missed the enemy.");
             }
         }
 
@@ -166,7 +184,6 @@ namespace TheLibrarianRpg
 
         void ChangeEquipment()
         {
-            int inventIDLen;
             int answer;
             do{
                 Console.Clear();
@@ -192,28 +209,28 @@ namespace TheLibrarianRpg
                     for(int i = 0; i < inventory.Length; i++){
                         if (inventory[i].GetType() == equipment[entry - 1].GetType() && inventory[i].equipped == true){
                             inventory[i].equipped = false;
-                            ItemEffect(inventory[i]);
+                            ItemEffect(i);
                         }
                     }
                     equipment[entry - 1] = inventory[inventoryID[answer - 1]];
                     inventory[inventoryID[answer - 1]].equipped = true;
-                    ItemEffect(inventory[inventoryID[answer - 1]]);
+                    ItemEffect(inventoryID[answer - 1]);
                 }
             } while (entry != 4);
         }
 
-        void ItemEffect(Item item)
+        void ItemEffect(int itemIndex)
         {
-            Type type = item.GetType();
+            Type type = inventory[itemIndex].GetType();
             if (type == typeof(TheLibrarianRpg.Weapon))
             {
-                if (item.equipped){
-                    atkPower += item.atkPower;
+                if (inventory[itemIndex].equipped){
+                    atkPower += inventory[itemIndex].atkPower;
                 }else{
-                    atkPower -= item.atkPower;
+                    atkPower -= inventory[itemIndex].atkPower;
                 }
             }else if(type == typeof(TheLibrarianRpg.Armor)){
-                if (item.equipped)
+                if (inventory[itemIndex].equipped)
                 {
                     atkResistance += atkResistance;
                 }else{
@@ -221,7 +238,7 @@ namespace TheLibrarianRpg
                 }
             }
             else if(type == typeof(TheLibrarianRpg.Accessory)){
-                if (item.equipped)
+                if (inventory[itemIndex].equipped)
                 {
 
                 }else{
@@ -262,9 +279,17 @@ namespace TheLibrarianRpg
             }
         }
 
+        //This is only for consumables
+        void UseItem(int i)
+        {
+            Console.WriteLine("Choose item:");
+            entry = ReadNumber(1, inventIDLen);
+            ItemEffect(i);
+            RemoveItem(i);
+            Console.WriteLine("You used " + inventory[i].name + ".");
+        }
         void ShowEquipment()
         {
-            string[] itemNames = new string[3];
             Console.WriteLine("IIII EQUIPMENT IIII");
             Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].atkPower + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].atkResistance + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].itemEffect);
             Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");

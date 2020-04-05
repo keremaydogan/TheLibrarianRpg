@@ -17,6 +17,6 @@ namespace TheLibrarianRpg
         public float critChance;
         public float critDeviRate;
         public float dodgeChance;
-        public float hitRate;
+        public float hitChance;
     }
 }
