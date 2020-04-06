@@ -7,7 +7,6 @@ namespace TheLibrarianRpg
     public class Character : Stats
     {
         public string name;
-        public float maxHp;
 
         Random rand;
 

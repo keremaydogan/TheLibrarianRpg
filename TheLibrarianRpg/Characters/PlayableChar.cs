@@ -67,7 +67,7 @@ namespace TheLibrarianRpg
 
                 case 3:
                     ShowInventory(typeof(TheLibrarianRpg.Consumable));
-                    UseItem(inventoryID[entry - 1]);
+                    UseItem();
                     break;
 
                 case 4:
@@ -232,21 +232,31 @@ namespace TheLibrarianRpg
             }else if(type == typeof(TheLibrarianRpg.Armor)){
                 if (inventory[itemIndex].equipped)
                 {
-                    atkResistance += atkResistance;
+                    atkResistance += inventory[itemIndex].atkResistance;
                 }else{
-                    atkResistance -= atkResistance;
+                    atkResistance -= inventory[itemIndex].atkResistance;
                 }
             }
             else if(type == typeof(TheLibrarianRpg.Accessory)){
                 if (inventory[itemIndex].equipped)
                 {
-
+                    vigor += inventory[itemIndex].vigor;
+                    strength += inventory[itemIndex].strength;
+                    endurance += inventory[itemIndex].endurance;
+                    dexterity += inventory[itemIndex].dexterity;
                 }else{
-
+                    vigor -= inventory[itemIndex].vigor;
+                    strength -= inventory[itemIndex].strength;
+                    endurance -= inventory[itemIndex].endurance;
+                    dexterity -= inventory[itemIndex].dexterity;
                 }
             }
             else if(type == typeof(TheLibrarianRpg.Consumable)){
-
+                hp += inventory[itemIndex].hp;
+                if(hp > maxHp){
+                    hp = maxHp;
+                    Console.WriteLine("Your HP maxed out.");
+                }
             }
         }
 
@@ -280,18 +290,18 @@ namespace TheLibrarianRpg
         }
 
         //This is only for consumables
-        void UseItem(int i)
+        void UseItem()
         {
             Console.WriteLine("Choose item:");
             entry = ReadNumber(1, inventIDLen);
-            ItemEffect(i);
-            RemoveItem(i);
-            Console.WriteLine("You used " + inventory[i].name + ".");
+            ItemEffect(entry);
+            RemoveItem(entry);
+            Console.WriteLine("You used " + inventory[entry].name + ".");
         }
         void ShowEquipment()
         {
             Console.WriteLine("IIII EQUIPMENT IIII");
-            Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].atkPower + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].atkResistance + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].itemEffect);
+            Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].atkPower + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].atkResistance + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].ItemDef());
             Console.WriteLine("IIIIIIIIIIIIIIIIIIII\n");
         }
 

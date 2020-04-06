@@ -65,8 +65,44 @@ namespace TheLibrarianRpg
                 }
             }
 
-            //ENTER ATTACK EQUATION
+            Attack(pChar[chosen]);
 
+        }
+
+        public void Attack(PlayableChar pc)
+        {
+            float atk = 0;
+            if (HitChance())
+            {
+                if (pc.DodgeChance())
+                {
+                    Console.WriteLine(pc.name + " dodged the attack.");
+                }
+                else
+                {
+                    if (CritChance())
+                    {
+                        atk += atkPower * critChance;
+                    }
+                    else
+                    {
+                        atk += atkPower;
+                    }
+                    atk = atk * AttackDeviRate();
+                    atk = MathF.Ceiling(atk);
+
+                    pc.hp -= atk;
+
+                    Console.WriteLine(name + " attacked to " + pc.name + " and damaged " + atk + " HP.");
+                    if (pc.hp <= 0)
+                    {
+                        Console.WriteLine(pc.name + " died.");
+                        pc = null;
+                    }
+                }
+            }else{
+                Console.WriteLine(name + " missed the enemy.");
+            }
         }
 
         public string fightScreenDef()

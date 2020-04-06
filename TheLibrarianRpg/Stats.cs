@@ -11,12 +11,14 @@ namespace TheLibrarianRpg
         public int endurance;
         public int dexterity;
 
-        public float hp;
+        public float maxHp;
         public float atkPower;
         public float atkResistance;
         public float critChance;
         public float critDeviRate;
         public float dodgeChance;
         public float hitChance;
+
+        public float hp;
     }
 }

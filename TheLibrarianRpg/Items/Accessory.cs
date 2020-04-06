@@ -6,6 +6,7 @@ namespace TheLibrarianRpg
 {
     public class Accessory : Item
     {
+        //Only Basic Stats! 
         public Accessory(string name)
         {
             this.name = name;

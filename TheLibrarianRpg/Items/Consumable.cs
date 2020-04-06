@@ -7,6 +7,5 @@ namespace TheLibrarianRpg
     public class Consumable : Item
     {
         
-
     }
 }

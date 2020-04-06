@@ -14,10 +14,25 @@ namespace TheLibrarianRpg
         public int quantity;
         public int maxQuantity;
 
-        public string itemEffect;
-
         public bool equipped;
-        
 
+        public string ItemDef()
+        {
+            string str = "";
+            if (vigor != 0){
+                str += "VIG: " + vigor + " ";
+            }
+            if (strength != 0){
+                str += "STR: " + strength + " ";
+            }
+            if (endurance != 0){
+                str += "END: " + vigor + " ";
+            }
+            if (dexterity != 0){
+                str += "DEX: " + dexterity + " ";
+            }
+            str += "\n";
+            return str;
+        }
     }
 }
