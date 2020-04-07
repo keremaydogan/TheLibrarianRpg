@@ -8,18 +8,24 @@ namespace TheLibrarianRpg.TownTemplate
     {
         public string name;
         public PlayableChar[] mercenary;
-        public Tavern(string name, int mercQty)
+        int mercQty;
+        public Tavern()
         {
-            this.name = name;
             mercenary = new PlayableChar[mercQty];
+            for (int i = 0; i < mercenary.Length; i++)
+            {
+                mercenary[i] = new PlayableChar();
+            }
         }
+
         public void Menu()
         {
             int entry = 0;
             do
             {
                 Console.Clear();
-
+                Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
+                
 
 
             } while (entry != 0);

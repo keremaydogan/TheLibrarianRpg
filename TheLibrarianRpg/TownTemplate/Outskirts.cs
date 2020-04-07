@@ -10,6 +10,10 @@ namespace TheLibrarianRpg.TownTemplate
         public Outskirts()
         {
             mob = new Mob[] { };
+            for(int i = 0; i < mob.Length; i++)
+            {
+                mob[i] = new Mob();
+            }
         }
 
         public void Menu()

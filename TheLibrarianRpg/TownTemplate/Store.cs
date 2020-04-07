@@ -7,11 +7,15 @@ namespace TheLibrarianRpg.TownTemplate
     public class Store
     {
         public string name;
-        public Item[] items;
-        public Store(string name, int itemQty)
+        public Item[] goods;
+        int itemQty;
+        public Store()
         {
-            this.name = name;
-            items = new Item[itemQty];
+            goods = new Item[itemQty];
+            for (int i = 0; i < goods.Length; i++)
+            {
+                goods[i] = new Item();
+            }
         }
 
         public void Menu()
@@ -20,6 +24,7 @@ namespace TheLibrarianRpg.TownTemplate
             do
             {
                 Console.Clear();
+                Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
 
 
 

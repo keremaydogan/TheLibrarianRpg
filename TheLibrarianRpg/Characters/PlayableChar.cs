@@ -124,7 +124,7 @@ namespace TheLibrarianRpg
             entry = 0;
             int statIndex;
             int change;
-            string stats = "Stats ("+ name +"):\n1) Vigor: "+ vigor +"\n2) Strength: "+ strength +"\n3) Endurance: "+ endurance +"\n4) Dexterity: "+ dexterity +"\n\nFirst enter statistic's no (enter '5' to exit this screen). Then enter the change that you want in '+/-num' format.\nYou can't reduce saved stat points.\n\nRemaining stat points: " + statPoints + "\n\n";
+            string stats = "Stats ("+ name +"):\n1) Vigor: "+ vigor +"\n2) Strength: "+ strength +"\n3) Endurance: "+ endurance +"\n4) Dexterity: "+ dexterity +"\n\nFirst enter statistic's no (enter '0' to exit this screen). Then enter the change that you want in '+/-num' format.\nYou can't reduce saved stat points.\n\nRemaining stat points: " + statPoints + "\n\n";
 
             do
             {
@@ -174,11 +174,11 @@ namespace TheLibrarianRpg
                         statPoints -= change;
                         break;
                 }
-                if(entry == 5) {
-                    Console.WriteLine("Are you sure? Changes are permanent.\n(5: yes, any other number: no)" );
+                if(entry == 0) {
+                    Console.WriteLine("Are you sure? Changes are permanent.\n(0: yes, any other number: no)" );
                     entry = ReadNumber(int.MinValue, int.MaxValue);
                 }
-            } while (entry != 5);
+            } while (entry != 0);
             StatEquation();
         }
 
@@ -188,8 +188,8 @@ namespace TheLibrarianRpg
             do{
                 Console.Clear();
                 ShowEquipment();
-                Console.WriteLine("Choose equipment: (4 to exit)");
-                entry = ReadNumber(1, 4);
+                Console.WriteLine("Choose equipment: (0 to exit)");
+                entry = ReadNumber(0, 3);
                 switch (entry){
                     case (1):
                         ShowInventory(typeof(TheLibrarianRpg.Weapon));
@@ -216,7 +216,7 @@ namespace TheLibrarianRpg
                     inventory[inventoryID[answer - 1]].equipped = true;
                     ItemEffect(inventoryID[answer - 1]);
                 }
-            } while (entry != 4);
+            } while (entry != 0);
         }
 
         void ItemEffect(int itemIndex)
@@ -292,11 +292,14 @@ namespace TheLibrarianRpg
         //This is only for consumables
         void UseItem()
         {
-            Console.WriteLine("Choose item:");
-            entry = ReadNumber(1, inventIDLen);
-            ItemEffect(entry);
-            RemoveItem(entry);
-            Console.WriteLine("You used " + inventory[entry].name + ".");
+            Console.WriteLine("Choose item: (enter 0 to get back)");
+            entry = ReadNumber(0, inventIDLen);
+            if(entry != 0)
+            {
+                ItemEffect(entry);
+                RemoveItem(entry);
+                Console.WriteLine("You used " + inventory[entry].name + ".");
+            }
         }
         void ShowEquipment()
         {
