@@ -26,6 +26,7 @@ namespace TheLibrarianRpg
         public void Fight(PlayableChar[] pChar)
         {
             maxValue = 0;
+            float randcheck = 0;
 
             for (int i = 0; i < pChar.Length; i++)
             {
@@ -51,16 +52,27 @@ namespace TheLibrarianRpg
 
             for (int i = 0; i < pChar.Length; i++)
             {
-                if(maxValue < pChar[i].mobValue)
+                randcheck += pChar[i].mobValue;
+            }
+            if(randcheck == 0)
+            {
+                chosen = rand.Next(0, pChar.Length);
+            }
+            else
+            {
+                for (int i = 0; i < pChar.Length; i++)
                 {
-                    chosen = i;
-                }
-                else if (maxValue == pChar[i].mobValue)
-                {
-                    equalValue = rand.Next(2);
-                    if(equalValue == 1)
+                    if (maxValue < pChar[i].mobValue)
                     {
                         chosen = i;
+                    }
+                    else if (maxValue == pChar[i].mobValue)
+                    {
+                        equalValue = rand.Next(2);
+                        if (equalValue == 1)
+                        {
+                            chosen = i;
+                        }
                     }
                 }
             }

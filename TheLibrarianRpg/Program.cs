@@ -8,6 +8,7 @@ namespace TheLibrarianRpg
         {
             for (int i = 0; i < 30; i++)
             {}
+            Console.ReadLine();
         }
 
         static int ReadNumber(int min, int max)
