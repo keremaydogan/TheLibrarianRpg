@@ -9,7 +9,7 @@ namespace TheLibrarianRpg.TownTemplate
         public string name;
         public PlayableChar[] mercenary;
         int mercQty;
-        public Tavern()
+        public Tavern(Protagonist protagonist)
         {
             mercenary = new PlayableChar[mercQty];
             for (int i = 0; i < mercenary.Length; i++)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheLibrarianRpg.Characters
+namespace TheLibrarianRpg
 {
     public class Protagonist
     {
@@ -12,27 +12,27 @@ namespace TheLibrarianRpg.Characters
 
         public Protagonist()
         {
-            name = "Librarian";
             mercenary = new PlayableChar[3];
         }
 
-        public void Store(byte transaction)
+        public void BuyMerc()
         {
-            
 
         }
 
-        static int ReadNumber(int min, int max)
+        public void PartWMerc()
         {
-            int num;
-            string entry = Console.ReadLine();
-            while (!int.TryParse(entry, out num) || num < min || num > max)
-            {
-                Console.WriteLine("[INVALID ENTRY]");
-                entry = Console.ReadLine();
-            }
-            return num;
+
         }
 
+        public void BuyItem()
+        {
+
+        }
+
+        public void SellItem()
+        {
+
+        }
     }
 }

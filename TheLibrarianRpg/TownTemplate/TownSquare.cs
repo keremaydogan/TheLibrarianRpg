@@ -15,13 +15,13 @@ namespace TheLibrarianRpg.TownTemplate
 
         public Outskirts outskirts;
 
-        public TownSquare(string name)
+        public TownSquare(string name, Protagonist protagonist)
         {
             this.name = name;
 
-            tavern = new Tavern();
+            tavern = new Tavern(protagonist);
 
-            store = new Store();
+            store = new Store(protagonist);
 
             outskirts = new Outskirts();
         }

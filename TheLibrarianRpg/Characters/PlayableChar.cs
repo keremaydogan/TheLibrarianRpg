@@ -301,6 +301,7 @@ namespace TheLibrarianRpg
                 Console.WriteLine("You used " + inventory[entry].name + ".");
             }
         }
+
         void ShowEquipment()
         {
             Console.WriteLine("IIII EQUIPMENT IIII");

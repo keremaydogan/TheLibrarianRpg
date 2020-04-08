@@ -8,20 +8,16 @@ namespace TheLibrarianRpg.TownTemplate
     {
         public string name;
         public Armor[] armor;
-        public int armorQty;
         public Consumable[] consumable;
-        public int consQty;
         public Accessory[] accessory;
-        public int acsQty;
         public Weapon[] weapon;
-        public int weaponQty;
 
-        public Store()
+        public Store(Protagonist protagonist)
         {
-            armor = new Armor[armorQty];
-            consumable = new Consumable[consQty];
-            accessory = new Accessory[acsQty];
-            weapon = new Weapon[weaponQty];
+            armor = new Armor[8];
+            consumable = new Consumable[8];
+            accessory = new Accessory[8];
+            weapon = new Weapon[8];
         }
 
         public void Menu()
@@ -31,45 +27,79 @@ namespace TheLibrarianRpg.TownTemplate
             {
                 Console.Clear();
                 Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
-                Console.WriteLine("1) Armor\n2) Weapon\n3) Accessory\n4) Consumable");
-                entry = ReadNumber(0, 4);
-                ShowGoods(entry);
+                Console.WriteLine("1) Buy\n 2) Sell");
+                Console.WriteLine("(0 to back)");
+                entry = ReadNumber(0, 2);
+                if (entry == 1)
+                {
+                    Console.Clear();
+                    Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
+                    Console.WriteLine("1) Armor\n2) Weapon\n3) Accessory\n4) Consumable");
+                    Console.WriteLine("(0 to back)");
+                    entry = ReadNumber(0, 4);
+                    Console.Clear();
+                    Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
+                    switch (entry)
+                    {
+                        case (1):
+                            SellGoods(armor);
+                            break;
+                        case (2):
+                            SellGoods(weapon);
+                            break;
+                        case (3):
+                            SellGoods(accessory);
+                            break;
+                        case (4):
+                            SellGoods(consumable);
+                            break;
+                    }
+                    entry = 1;
+                }
+                else if (entry == 2)
+                {
+
+
+                    entry = 2;
+                }
+
                 
 
             } while (entry != 0);
         }
 
-        public void ShowGoods(int entry)
+        public void ShowGoods(Item[] items)
         {
-            switch (entry)
-            {
-                case (1):
-                    Console.WriteLine("Armors:");
-                    for (int i = 0; i < armor.Length; i++){
-                        Console.WriteLine((i + 1) + ") " + armor[i].name);
-                    }
-                    break;
-                case (2):
-                    Console.WriteLine("Weapons:");
-                    for (int i = 0; i < weapon.Length; i++){
-                        Console.WriteLine((i + 1) + ") " + weapon[i].name);
-                    }
-                    break;
-                case (3):
-                    Console.WriteLine("Accessories:");
-                    for (int i = 0; i < accessory.Length; i++){
-                        Console.WriteLine((i + 1) + ") " + accessory[i].name);
-                    }
-                    break;
-                case (4):
-                    Console.WriteLine("Consumables:");
-                    for (int i = 0; i < consumable.Length; i++){
-                        Console.WriteLine((i + 1) + ") " + consumable[i].name);
-                    }
-                    break;
+            Console.WriteLine(items[0].GetType().ToString().ToUpper());
+            for (int i = 0; i < ArrayLen(items); i++){
+                Console.WriteLine((i + 1) + ") " + items[i].name);
             }
         }
 
+        void SellGoods(Item[] items)
+        {
+            int entry;
+            ShowGoods(items);
+            Console.WriteLine("Choose item:");
+            entry = ReadNumber(0, ArrayLen(items));
+            if (entry != 0)
+            {
+
+            }    
+        }
+
+        public int ArrayLen(Item[] array)
+        {
+            int arrayLen = -1;
+            for(int i = 0; i < array.Length && arrayLen == 1; i++)
+            {
+                if(array[i] == null)
+                {
+                    arrayLen = i;
+                }
+            }
+            return arrayLen;
+        }
         static int ReadNumber(int min, int max)
         {
             int num;

@@ -6,8 +6,17 @@ namespace TheLibrarianRpg
     {
         static void Main(string[] args)
         {
-            for (int i = 0; i < 30; i++)
-            {}
+            PlayableChar[] pc = new PlayableChar[5];
+            pc[0] = new PlayableChar();
+            pc[1] = new PlayableChar();
+            int arrayLen = -1;
+            for (int i = 0; i < 30 && arrayLen == -1; i++){
+                if(pc[i] == null)
+                {
+                    arrayLen = i;
+                }
+            }
+            Console.WriteLine(arrayLen);
             Console.ReadLine();
         }
 
