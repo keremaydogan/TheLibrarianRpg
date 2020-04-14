@@ -8,6 +8,7 @@ namespace TheLibrarianRpg
     {
         public int xp;
         public int level;
+        public int statPoints;
 
         private int vigorMultp;
         private int strengthMultp;
@@ -19,8 +20,6 @@ namespace TheLibrarianRpg
         private int enduranceBase;
         private int dexterityBase;
 
-        public int statPoints;
-
         public float mobValue;
 
         public Item[] inventory;
@@ -29,6 +28,7 @@ namespace TheLibrarianRpg
         private int entry;
         private int[] inventoryID;
         private int inventIDLen;
+        public bool takeItem;
 
         public PlayableChar()
         {
@@ -41,7 +41,11 @@ namespace TheLibrarianRpg
             enduranceBase = endurance;
             dexterityBase = dexterity;
 
-            inventoryID = new int[17];
+            inventory = new Item[8];
+
+            equipment = new Item[3];
+
+            inventoryID = new int[9];
         }
 
         public void Fight(Mob[] mob)
@@ -325,7 +329,7 @@ namespace TheLibrarianRpg
             dexterityBase = dexterity;
         }
 
-        void TakeItem(Item newItem)
+        public void TakeItem(Item newItem)
         {
             if(newItem.GetType() == typeof(TheLibrarianRpg.Consumable))
             {

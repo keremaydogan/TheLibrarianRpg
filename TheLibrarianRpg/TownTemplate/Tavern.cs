@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheLibrarianRpg.TownTemplate
+namespace TheLibrarianRpg
 {
     public class Tavern
     {
-        public string name;
-        public PlayableChar[] mercenary;
-        int mercQty;
-        public Tavern(Protagonist protagonist)
+        public string taName;
+        public string taDesc;
+        public PlayableChar[] taMercenary;
+        int taMercQty;
+        public Tavern()
         {
-            mercenary = new PlayableChar[mercQty];
-            for (int i = 0; i < mercenary.Length; i++)
+            taMercenary = new PlayableChar[taMercQty];
+            for (int i = 0; i < taMercenary.Length; i++)
             {
-                mercenary[i] = new PlayableChar();
+                taMercenary[i] = new PlayableChar();
             }
         }
 
@@ -24,7 +25,7 @@ namespace TheLibrarianRpg.TownTemplate
             do
             {
                 Console.Clear();
-                Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
+                Console.WriteLine("IIIIII " + taName.ToUpper() + " IIIIII");
                 
 
 

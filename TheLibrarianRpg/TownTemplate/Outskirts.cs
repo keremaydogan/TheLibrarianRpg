@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheLibrarianRpg.TownTemplate
+namespace TheLibrarianRpg
 {
     public class Outskirts
     {

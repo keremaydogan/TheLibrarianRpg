@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheLibrarianRpg.TownTemplate
+namespace TheLibrarianRpg
 {
     public class Store
     {
-        public string name;
-        public Armor[] armor;
-        public Consumable[] consumable;
-        public Accessory[] accessory;
-        public Weapon[] weapon;
+        public string stName;
+        public Armor[] stArmor;
+        public Consumable[] stConsumable;
+        public Accessory[] stAccessory;
+        public Weapon[] stWeapon;
 
-        public Store(Protagonist protagonist)
+        public Store()
         {
-            armor = new Armor[8];
-            consumable = new Consumable[8];
-            accessory = new Accessory[8];
-            weapon = new Weapon[8];
+            stArmor = new Armor[8];
+            stConsumable = new Consumable[8];
+            stAccessory = new Accessory[8];
+            stWeapon = new Weapon[8];
         }
 
         public void Menu()
@@ -26,32 +26,32 @@ namespace TheLibrarianRpg.TownTemplate
             do
             {
                 Console.Clear();
-                Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
-                Console.WriteLine("1) Buy\n 2) Sell");
+                Console.WriteLine("IIIIII " + stName.ToUpper() + " IIIIII");
+                Console.WriteLine("1) Buy\n2) Sell");
                 Console.WriteLine("(0 to back)");
                 entry = ReadNumber(0, 2);
                 if (entry == 1)
                 {
                     Console.Clear();
-                    Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
+                    Console.WriteLine("IIIIII " + stName.ToUpper() + " IIIIII");
                     Console.WriteLine("1) Armor\n2) Weapon\n3) Accessory\n4) Consumable");
                     Console.WriteLine("(0 to back)");
                     entry = ReadNumber(0, 4);
                     Console.Clear();
-                    Console.WriteLine("IIIIII " + name.ToUpper() + " IIIIII");
+                    Console.WriteLine("IIIIII " + stName.ToUpper() + " IIIIII");
                     switch (entry)
                     {
                         case (1):
-                            SellGoods(armor);
+                            SellGoods(stArmor);
                             break;
                         case (2):
-                            SellGoods(weapon);
+                            SellGoods(stWeapon);
                             break;
                         case (3):
-                            SellGoods(accessory);
+                            SellGoods(stAccessory);
                             break;
                         case (4):
-                            SellGoods(consumable);
+                            SellGoods(stConsumable);
                             break;
                     }
                     entry = 1;
@@ -71,7 +71,7 @@ namespace TheLibrarianRpg.TownTemplate
         public void ShowGoods(Item[] items)
         {
             Console.WriteLine(items[0].GetType().ToString().ToUpper());
-            for (int i = 0; i < ArrayLen(items); i++){
+            for (int i = 0; i < StArrayLen(items); i++){
                 Console.WriteLine((i + 1) + ") " + items[i].name);
             }
         }
@@ -81,14 +81,14 @@ namespace TheLibrarianRpg.TownTemplate
             int entry;
             ShowGoods(items);
             Console.WriteLine("Choose item:");
-            entry = ReadNumber(0, ArrayLen(items));
+            entry = ReadNumber(0, StArrayLen(items));
             if (entry != 0)
             {
 
             }    
         }
 
-        public int ArrayLen(Item[] array)
+        public int StArrayLen(Item[] array)
         {
             int arrayLen = -1;
             for(int i = 0; i < array.Length && arrayLen == 1; i++)

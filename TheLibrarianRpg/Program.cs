@@ -6,20 +6,15 @@ namespace TheLibrarianRpg
     {
         static void Main(string[] args)
         {
-            PlayableChar[] pc = new PlayableChar[5];
-            pc[0] = new PlayableChar();
-            pc[1] = new PlayableChar();
-            int arrayLen = -1;
-            for (int i = 0; i < 30 && arrayLen == -1; i++){
-                if(pc[i] == null)
-                {
-                    arrayLen = i;
-                }
-            }
-            Console.WriteLine(arrayLen);
-            Console.ReadLine();
-        }
+            Tavern tavern1 = new Tavern();
+            tavern1.taName = "tavern1";
+            Store store1 = new Store();
+            store1.stName = "store1";
+            TownSquare town1 = new TownSquare("town1", tavern1, store1);
+            town1.Menu();
+            Console.ReadKey();
 
+        }
         static int ReadNumber(int min, int max)
         {
             int num;
