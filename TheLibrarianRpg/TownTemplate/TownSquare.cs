@@ -165,7 +165,7 @@ namespace TheLibrarianRpg
         public int StArrayLen(Item[] array)
         {
             int arrayLen = -1;
-            for (int i = 0; i < array.Length && arrayLen == 1; i++)
+            for (int i = 0; i < array.Length && arrayLen == -1; i++)
             {
                 if (array[i] == null)
                 {

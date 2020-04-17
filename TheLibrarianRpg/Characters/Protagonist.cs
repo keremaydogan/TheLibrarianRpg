@@ -19,6 +19,11 @@ namespace TheLibrarianRpg
             mercenary = new PlayableChar[3];
         }
 
+        public void Menu()
+        {
+            Console.WriteLine("IIII Librarian IIII\nWallet: " + wallet + "coins\n1) Map\n2) To-do list\n3) Mercenaries (" + MercArrLen() +")");
+        }
+
         public void BuyMerc()
         {
 
@@ -36,7 +41,10 @@ namespace TheLibrarianRpg
                 Console.WriteLine((i + 1) + ") " + mercenary[i].name);
             }
             entry = ReadNumber(0, MercArrLen());
-            if(entry != 0){
+            if(entry != 0 && mercenary[entry - 1].inventory.Length == mercenary[entry - 1].InventLen())
+            {
+                Console.WriteLine();
+            }else if(entry != 0){
                 mercenary[entry - 1].TakeItem(newItem);
             }
         }

@@ -15,6 +15,7 @@ namespace TheLibrarianRpg
             Console.ReadKey();
 
         }
+
         static int ReadNumber(int min, int max)
         {
             int num;

@@ -205,7 +205,7 @@ namespace TheLibrarianRpg
                         ShowInventory(typeof(TheLibrarianRpg.Accessory));
                         break;
                 }
-                if(entry != 4){
+                if(entry != 0){
                     for (inventIDLen = 0; inventoryID[inventIDLen] != -1; inventIDLen++) { }
                     Console.WriteLine("\nChoose item:");
                     answer = ReadNumber(1, inventIDLen);
@@ -262,6 +262,17 @@ namespace TheLibrarianRpg
                     Console.WriteLine("Your HP maxed out.");
                 }
             }
+        }
+
+        public int InventLen()
+        {
+            int inventLen = -1;
+            for (int i = 0; i < inventory.Length && inventLen == -1; i++){
+                if(inventory[i] == null){
+                    inventLen = i;
+                }
+            }
+            return inventLen;
         }
 
         void ShowInventory(Type itemType)
@@ -408,6 +419,15 @@ namespace TheLibrarianRpg
             bridgeItem = inventory[item1];
             inventory[item1] = inventory[item2];
             inventory[item2] = bridgeItem;
+        }
+
+        int InventoryValue()
+        {
+            int value = 0;
+            for(int i = 0; i < InventLen(); i++){
+                value += inventory[i].price;
+            }
+            return value;
         }
 
         static int ReadNumber(int min, int max)
