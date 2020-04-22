@@ -170,16 +170,48 @@ namespace TheLibrarianRpg
                     entry = 1;
                 }else if (entry == 2){
                     Console.Clear();
-                    librarian.SellItem();
-                    BuyGoods(librarian.soldItem);
+                    librarian.SelectItem();
+                    BuyGoods(librarian.selctdItem);
                     entry = 2;
                 }
             } while (entry != 0);
         }
         void BuyGoods(Item item)
         {
-
+            if (HaveSpace(item))
+            {
+                librarian.SellItem();
+                Console.WriteLine("Sale complete.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("Shopkeeper don't want to buy more " + item.GetType().Name.ToString().ToLower() + ".");
+                Console.ReadKey();
+            }
         }
+
+        bool HaveSpace(Item item)
+        {
+            bool haveSpace = true;
+            if (item.GetType() == typeof(TheLibrarianRpg.Armor)){
+                if (StArrayLen(stArmor) == stArmor.Length){
+                    haveSpace = false;
+                }
+            }
+            else if (item.GetType() == typeof(TheLibrarianRpg.Weapon)){
+                if (StArrayLen(stWeapon) == stWeapon.Length){
+                    haveSpace = false;
+                }
+            }
+            else if (item.GetType() == typeof(TheLibrarianRpg.Accessory)){
+                if (StArrayLen(stAccessory) == stAccessory.Length){
+                    haveSpace = false;
+                }
+            }
+            return haveSpace;
+        }
+
         void SellGoods(Item[] items)
         {
             int entry;

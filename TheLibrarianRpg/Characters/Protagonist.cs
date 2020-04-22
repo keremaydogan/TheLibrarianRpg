@@ -15,7 +15,10 @@ namespace TheLibrarianRpg
 
         int entry;
 
-        public Item soldItem;
+        //SellItem
+        public Item selctdItem;
+        int mercId;
+        int sellItem;
 
         public Protagonist()
         {
@@ -75,7 +78,7 @@ namespace TheLibrarianRpg
             if (entry == 1)
             {
                 mercenary[merc] = null;
-                MercCompactor(mercenary);
+                MercCompactor();
                 Console.WriteLine("Done.");
             }
             entry = 1;
@@ -100,26 +103,25 @@ namespace TheLibrarianRpg
 
         public void SellItem()
         {
-            int merc;
-            int item;
-            Console.WriteLine("Choose mercenary:");
-            merc = ReadNumber(1, MercArrLen()) - 1;
-            mercenary[merc].ShowInventory(typeof(TheLibrarianRpg.Item));
-            Console.WriteLine("Select item to sell:");
-            item = ReadNumber(1, mercenary[merc].InventLen()) - 1;
-            Console.WriteLine("Do you want to sell " + mercenary[merc].inventory[item].name + "?");
+            SelectItem();
+            Console.WriteLine("Do you want to sell " + mercenary[mercId].inventory[sellItem].name + "?");
             Console.WriteLine("(1: yes, any other answer: no)");
             entry = ReadNumber(int.MinValue, int.MaxValue);
             if (entry == 1){
-                soldItem = mercenary[merc].inventory[item];
-                wallet += mercenary[merc].inventory[item].price / 2;
-                mercenary[merc].RemoveItem(item);
+                
+                wallet += mercenary[mercId].inventory[sellItem].price / 2;
+                mercenary[mercId].RemoveItem(sellItem);
             }
         }
 
         public void SelectItem()
         {
-
+            Console.WriteLine("Choose mercenary:");
+            mercId = ReadNumber(1, MercArrLen()) - 1;
+            mercenary[mercId].ShowInventory(typeof(TheLibrarianRpg.Item));
+            Console.WriteLine("Select item to sell:");
+            sellItem = ReadNumber(1, mercenary[mercId].InventLen()) - 1;
+            selctdItem = mercenary[mercId].inventory[sellItem];
         }
 
         void ShowMercs()
