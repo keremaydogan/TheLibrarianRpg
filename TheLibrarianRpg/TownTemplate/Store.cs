@@ -8,14 +8,12 @@ namespace TheLibrarianRpg
     {
         public string stName;
         public Armor[] stArmor;
-        public Consumable[] stConsumable;
         public Accessory[] stAccessory;
         public Weapon[] stWeapon;
 
         public Store()
         {
             stArmor = new Armor[8];
-            stConsumable = new Consumable[8];
             stAccessory = new Accessory[8];
             stWeapon = new Weapon[8];
         }
@@ -36,7 +34,7 @@ namespace TheLibrarianRpg
                     Console.WriteLine("IIIIII " + stName.ToUpper() + " IIIIII");
                     Console.WriteLine("1) Armor\n2) Weapon\n3) Accessory\n4) Consumable");
                     Console.WriteLine("(0 to back)");
-                    entry = ReadNumber(0, 4);
+                    entry = ReadNumber(0, 3);
                     Console.Clear();
                     Console.WriteLine("IIIIII " + stName.ToUpper() + " IIIIII");
                     switch (entry)
@@ -49,9 +47,6 @@ namespace TheLibrarianRpg
                             break;
                         case (3):
                             SellGoods(stAccessory);
-                            break;
-                        case (4):
-                            SellGoods(stConsumable);
                             break;
                     }
                     entry = 1;

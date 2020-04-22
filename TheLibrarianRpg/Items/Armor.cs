@@ -11,9 +11,6 @@ namespace TheLibrarianRpg
             this.name = name;
             this.atkResistance = atkResist;
 
-            quantity = 1;
-            maxQuantity = 1;
-
             equipped = false;
         }
     }

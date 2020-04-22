@@ -12,9 +12,6 @@ namespace TheLibrarianRpg
             this.atkPower = atkPower;
             this.critChance = critChance;
 
-            quantity = 1;
-            maxQuantity = 1;
-
             equipped = false;
         }
     }

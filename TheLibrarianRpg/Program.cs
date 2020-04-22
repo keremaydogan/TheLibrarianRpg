@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace TheLibrarianRpg
 {
@@ -6,15 +7,19 @@ namespace TheLibrarianRpg
     {
         static void Main(string[] args)
         {
+            Console.SetWindowSize(120, 40);
+
+            Console.ReadKey();
             Tavern tavern1 = new Tavern();
             tavern1.taName = "tavern1";
             Store store1 = new Store();
             store1.stName = "store1";
             TownSquare town1 = new TownSquare("town1", tavern1, store1);
             town1.Menu();
-            Console.ReadKey();
 
+            Console.ReadKey();
         }
+
 
         static int ReadNumber(int min, int max)
         {

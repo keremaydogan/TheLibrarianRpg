@@ -8,11 +8,9 @@ namespace TheLibrarianRpg
     {
         public string name;
         public int price;
-        public string[] classRequirement;
-        public int levelRequirement;
 
-        public int quantity;
-        public int maxQuantity;
+        public string classRequirement;
+        public int levelRequirement;
 
         public bool equipped;
 

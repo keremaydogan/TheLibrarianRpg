@@ -10,6 +10,10 @@ namespace TheLibrarianRpg
         public int level;
         public int statPoints;
 
+        public int price;
+
+        public string pcClass;
+
         private int vigorMultp;
         private int strengthMultp;
         private int enduranceMultp;
@@ -30,16 +34,25 @@ namespace TheLibrarianRpg
         private int inventIDLen;
         public bool takeItem;
 
+        public int medPackMax;
+        public int medPack;
+
+
         public PlayableChar()
         {
-            vigor = 4;
-            strength = 4;
-            endurance = 4;
-            dexterity = 4;
+            vigor = 1;
+            strength = 1;
+            endurance = 1;
+            dexterity = 1;
             vigorBase = vigor;
             strengthBase = strength;
             enduranceBase = endurance;
             dexterityBase = dexterity;
+
+            level = 1;
+
+            medPackMax = 4;
+            medPack = 4;
 
             inventory = new Item[8];
 
@@ -50,8 +63,13 @@ namespace TheLibrarianRpg
 
         public void Fight(Mob[] mob)
         {
-            Console.WriteLine("1) Attack\n2) Check\n3) Use item\n4) Change equipment");
+            Console.WriteLine("1) Attack\n2) Check\n3) Use medicine pack\n4) Change equipment");
             entry = ReadNumber(1, 4);
+            while(entry == 3 && medPack == 0)
+            {
+                Console.WriteLine("Your medicine package is empty.");
+                entry = ReadNumber(1, 4);
+            }
             switch (entry)
             {
                 case 1:
@@ -70,8 +88,7 @@ namespace TheLibrarianRpg
                     break;
 
                 case 3:
-                    ShowInventory(typeof(TheLibrarianRpg.Consumable));
-                    UseItem();
+                    UseMedPack();
                     break;
 
                 case 4:
@@ -223,6 +240,26 @@ namespace TheLibrarianRpg
             } while (entry != 0);
         }
 
+        public void ReplenishMedPack()
+        {
+            medPack = medPackMax;
+        }
+
+        public void UseMedPack()
+        {
+            if(medPack == 0){
+                Console.WriteLine("Your medicine package is empty.");
+                Console.ReadKey();
+            }
+            else{
+                hp += MathF.Ceiling((maxHp * (1 / 4)));
+                if(hp > maxHp)
+                {
+                    hp = maxHp;
+                }
+            }
+        }
+
         void ItemEffect(int itemIndex)
         {
             Type type = inventory[itemIndex].GetType();
@@ -240,8 +277,7 @@ namespace TheLibrarianRpg
                 }else{
                     atkResistance -= inventory[itemIndex].atkResistance;
                 }
-            }
-            else if(type == typeof(TheLibrarianRpg.Accessory)){
+            }else if(type == typeof(TheLibrarianRpg.Accessory)){
                 if (inventory[itemIndex].equipped)
                 {
                     vigor += inventory[itemIndex].vigor;
@@ -255,13 +291,9 @@ namespace TheLibrarianRpg
                     dexterity -= inventory[itemIndex].dexterity;
                 }
             }
-            else if(type == typeof(TheLibrarianRpg.Consumable)){
-                hp += inventory[itemIndex].hp;
-                if(hp > maxHp){
-                    hp = maxHp;
-                    Console.WriteLine("Your HP maxed out.");
-                }
-            }
+
+            //ADD FLASK
+
         }
 
         public int InventLen()
@@ -275,7 +307,7 @@ namespace TheLibrarianRpg
             return inventLen;
         }
 
-        void ShowInventory(Type itemType)
+        public void ShowInventory(Type itemType)
         {
             for(int i = 0; i < inventoryID.Length; i++){
                 inventoryID[i] = -1;
@@ -304,20 +336,7 @@ namespace TheLibrarianRpg
             }
         }
 
-        //This is only for consumables
-        void UseItem()
-        {
-            Console.WriteLine("Choose item: (enter 0 to get back)");
-            entry = ReadNumber(0, inventIDLen);
-            if(entry != 0)
-            {
-                ItemEffect(entry);
-                RemoveItem(entry);
-                Console.WriteLine("You used " + inventory[entry].name + ".");
-            }
-        }
-
-        void ShowEquipment()
+        public void ShowEquipment()
         {
             Console.WriteLine("IIII EQUIPMENT IIII");
             Console.WriteLine("1) Weapon: " + equipment[0].name + " ATK: +" + equipment[0].atkPower + "\n2) Armor: " + equipment[1].name + " DEF: +" + equipment[1].atkResistance + "\n3) Accessory: " + equipment[2].name + " Efct: " + equipment[2].ItemDef());
@@ -342,83 +361,28 @@ namespace TheLibrarianRpg
 
         public void TakeItem(Item newItem)
         {
-            if(newItem.GetType() == typeof(TheLibrarianRpg.Consumable))
+            if (inventory[inventory.Length - 1] != null)
             {
-                for(int i = 0; i < inventory.Length && newItem.quantity != 0; i++)
-                {
-                    if (newItem.name == inventory[i].name )
-                    {
-                        inventory[i].quantity += newItem.quantity;
-                        newItem.quantity = 0;
-                        if(inventory[i].quantity > inventory[i].maxQuantity)
-                        {
-                            newItem.quantity = inventory[i].quantity - inventory[i].maxQuantity;
-                            inventory[i].quantity = inventory[i].maxQuantity;
-                        }
-                    }
-                }
-
-                if(newItem.quantity > 0)
-                {
-                    Console.WriteLine("Inventory is full.");
-                }
-                else
-                {
-                    newItem = null;
-                }
+                Console.WriteLine("Inventory is full.");
+                Console.ReadKey();
             }
             else
             {
-                if(inventory[inventory.Length - 1] != null)
-                {
-                    Console.WriteLine("Inventory is full.");
-                    Console.ReadKey();
-                }
-                else
-                {
-                    int i = 0;
-                    for(; i < inventory.Length && inventory[i] != null; i++){}
-                    inventory[i] = new Item();
-                    inventory[i] = newItem;
-                    newItem = null;
-                }
+                int i = 0;
+                for (; i < inventory.Length && inventory[i] != null; i++) { }
+                inventory[i] = new Item();
+                inventory[i] = newItem;
+                newItem = null;
             }
         }
 
-        void RemoveItem(int iRem)
+        public void RemoveItem(int iRem)
         {
-            int sub;
-            if (inventory[iRem].quantity > 1)
+            for (; iRem < (inventory.Length - 1); iRem++)
             {
-                Console.WriteLine("How many do you want to remove?");
-                sub = ReadNumber(0, inventory[iRem].quantity);
-                inventory[iRem].quantity -= sub;
+                inventory[iRem] = inventory[iRem + 1];
             }
-            if(inventory[iRem].quantity <= 1)
-            {
-                for(; iRem < (inventory.Length - 1); iRem++)
-                {
-                    inventory[iRem] = inventory[iRem + 1];
-                }
-                inventory[inventory.Length - 1] = null;
-            }
-        }
-
-        void SwapItems()
-        {
-            var bridgeItem = new Item();
-
-            int item1, item2;
-            Console.WriteLine("Enter first item's no.");
-            item1 = ReadNumber(1, inventory.Length);
-            item1--;
-            Console.WriteLine("Enter second item's no.");
-            item2 = ReadNumber(1, inventory.Length);
-            item2--;
-
-            bridgeItem = inventory[item1];
-            inventory[item1] = inventory[item2];
-            inventory[item2] = bridgeItem;
+            inventory[inventory.Length - 1] = null;
         }
 
         int InventoryValue()
@@ -427,6 +391,7 @@ namespace TheLibrarianRpg
             for(int i = 0; i < InventLen(); i++){
                 value += inventory[i].price;
             }
+            value = value / 2;
             return value;
         }
 
@@ -442,9 +407,26 @@ namespace TheLibrarianRpg
             return num;
         }
 
+        public void StatScreen() 
+        {
+            Console.WriteLine(name);
+            Console.WriteLine(hp + "/" + maxHp);
+            Console.WriteLine("ATK: " + atkPower + "  " + "DEF: " + atkResistance);
+            Console.WriteLine("Critical attack chance: " + critChance);
+            Console.WriteLine("Hit chance: " + hitChance);
+            Console.WriteLine("Dodge chance: " + dodgeChance);
+            Console.WriteLine("VIG: " + vigor + "    STR: " + strength + "    END: " + endurance + "    DEX: " + dexterity);
+        }
+        public string TavernDef()
+        {
+            string def = name + "\n" + pcClass + "\nII HP: " + hp + "/" + maxHp + "\nATK:" + atkPower + "\nDEF:" + atkResistance + "\n";
+
+            return def;
+        }
+
         public string fightScreenDef()
         {
-            return "IIIIIIIIIIIIIIIIIIIIIIII\nII Name: " + name + "\nII HP: " + hp + "/" + maxHp;
+            return "IIIIIIIIIIIIIIIIIIIIIIII\nII Name: " + name + "\nII HP: " + hp + "/" + maxHp + "\n";
         }
 
     }

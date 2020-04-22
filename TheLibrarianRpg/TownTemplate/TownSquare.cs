@@ -16,7 +16,6 @@ namespace TheLibrarianRpg
 
         public string stName;
         public Armor[] stArmor;
-        public Consumable[] stConsumable;
         public Accessory[] stAccessory;
         public Weapon[] stWeapon;
 
@@ -31,6 +30,7 @@ namespace TheLibrarianRpg
             librarian = new Protagonist();
 
             //Tavern
+            taName = "tavern";
             taMercenary = new PlayableChar[taMercQty];
             for (int i = 0; i < taMercenary.Length; i++)
             {
@@ -38,8 +38,8 @@ namespace TheLibrarianRpg
             }
 
             //Store
+            stName = "store";
             stArmor = new Armor[8];
-            stConsumable = new Consumable[8];
             stAccessory = new Accessory[8];
             stWeapon = new Weapon[8];
 
@@ -81,14 +81,61 @@ namespace TheLibrarianRpg
         public void Tavern()
         {
             int entry = 0;
-            do
-            {
+            int merc;
+            do{
                 Console.Clear();
                 Console.WriteLine("IIIIII " + taName.ToUpper() + " IIIIII");
-
-
-
+                if(TaArrayLen() == 0){
+                    Console.WriteLine("There is no mercenaries in tavern.\nPress any button to continue.");
+                    Console.ReadKey();
+                }else{
+                    Console.WriteLine("Mercenaries:");
+                    for (int i = 0; i < TaArrayLen(); i++){
+                        Console.WriteLine((i + 1) + ") " + taMercenary[i].TavernDef());
+                    }
+                    Console.WriteLine();
+                    entry = ReadNumber(0, TaArrayLen());
+                    if (entry != 0){
+                        merc = entry;
+                        Console.WriteLine("1) Inspect\n2) Buy");
+                        entry = ReadNumber(0, 2);
+                        if (entry == 1){
+                            taMercenary[merc].StatScreen();
+                            Console.Clear();
+                            Console.WriteLine("\nPress any button to continue.");
+                            Console.ReadKey();
+                        }else if (entry == 2){
+                            if (taMercenary[merc].price > librarian.wallet)
+                            {
+                                Console.WriteLine("You don't have enough money.");
+                                Console.ReadKey();
+                            }else if (taMercenary.Length == TaArrayLen()){
+                                Console.WriteLine("Your party is full.");
+                            }else{
+                                Console.WriteLine("Do you want to hire " + taMercenary[merc].name + "?");
+                                Console.WriteLine("1: yes, any other answer: no");
+                                entry = ReadNumber(int.MinValue, int.MaxValue);
+                                if(entry == 1){
+                                    librarian.wallet -= taMercenary[merc].price;
+                                    librarian.BuyMerc(taMercenary[merc]);
+                                    Console.WriteLine(taMercenary[merc].name + " joined your party.");
+                                    Console.ReadKey();
+                                    taRemoveMerc(merc);
+                                }
+                            }
+                        }
+                        entry = 1;
+                    }
+                }
             } while (entry != 0);
+        }
+
+        public void taRemoveMerc(int index) 
+        {
+            for (; index < (taMercenary.Length - 1); index++){
+                taMercenary[index] = taMercenary[index + 1];
+            }
+            taMercenary[taMercenary.Length - 1] = null;
         }
         public void Store()
         {
@@ -100,8 +147,7 @@ namespace TheLibrarianRpg
                 Console.WriteLine("1) Buy\n2) Sell");
                 Console.WriteLine("(0 to back)");
                 entry = ReadNumber(0, 2);
-                if (entry == 1)
-                {
+                if (entry == 1){
                     Console.Clear();
                     Console.WriteLine("IIIIII " + stName.ToUpper() + " IIIIII");
                     Console.WriteLine("1) Armor\n2) Weapon\n3) Accessory\n4) Consumable");
@@ -120,22 +166,19 @@ namespace TheLibrarianRpg
                         case (3):
                             SellGoods(stAccessory);
                             break;
-                        case (4):
-                            SellGoods(stConsumable);
-                            break;
                     }
                     entry = 1;
-                }
-                else if (entry == 2)
-                {
-
-
+                }else if (entry == 2){
+                    Console.Clear();
+                    librarian.SellItem();
+                    BuyGoods(librarian.soldItem);
                     entry = 2;
                 }
-
-
-
             } while (entry != 0);
+        }
+        void BuyGoods(Item item)
+        {
+
         }
         void SellGoods(Item[] items)
         {
@@ -143,14 +186,11 @@ namespace TheLibrarianRpg
             ShowGoods(items);
             Console.WriteLine("Choose item:");
             entry = ReadNumber(0, StArrayLen(items));
-            if (entry != 0)
-            {
-                if(librarian.wallet < items[entry - 1].price)
-                {
+            if (entry != 0){
+                if(librarian.wallet < items[entry - 1].price){
                     Console.WriteLine("You don't have enough money.");
                     Console.ReadKey();
                 }
-
                 librarian.BuyItem(items[entry - 1]);
             }
         }
@@ -162,13 +202,22 @@ namespace TheLibrarianRpg
                 Console.WriteLine((i + 1) + ") " + items[i].name);
             }
         }
+
+        public int TaArrayLen()
+        {
+            int arrayLen = -1;
+            for(int i = 0; i < taMercenary.Length && arrayLen == -1; i++){
+                if (taMercenary[i] == null){
+                    arrayLen = i;
+                }
+            }
+            return arrayLen;
+        }
         public int StArrayLen(Item[] array)
         {
             int arrayLen = -1;
-            for (int i = 0; i < array.Length && arrayLen == -1; i++)
-            {
-                if (array[i] == null)
-                {
+            for (int i = 0; i < array.Length && arrayLen == -1; i++){
+                if (array[i] == null){
                     arrayLen = i;
                 }
             }
